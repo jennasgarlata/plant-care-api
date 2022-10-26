@@ -7,6 +7,12 @@ Description: >
 Globals:
   Function:
     Timeout: 10
+  Api:
+    Cors:
+      AllowMethods: "'GET,POST,OPTIONS'"
+      AllowHeaders: "'content-type'"
+      AllowOrigin: "'*'"
+      AllowCredentials: "'*'"
 
 Resources:
   HelloWorldFunction:
@@ -27,6 +33,24 @@ Resources:
           Properties:
             Path: /hello
             Method: get
+  GetPlantsForUserIdFunction:
+    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Properties:
+      CodeUri: ./src/GetPlantsForUserId/
+      Handler: GetPlantsForUserId::GetPlantsForUserId.Function::FunctionHandler
+      Runtime: dotnetcore3.1
+      Architectures:
+        - x86_64
+      MemorySize: 256
+      Environment: # More info about Env Vars: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#environment-object
+        Variables:
+          PARAM1: VALUE
+      Events:
+        GetPlantsForUserId:
+          Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
+          Properties:
+            Path: /GetPlantsForUserId
+            Method: get
 
 Outputs:
   # ServerlessRestApi is an implicit API created out of Events key under Serverless::Function
@@ -41,3 +65,12 @@ Outputs:
   HelloWorldFunctionIamRole:
     Description: "Implicit IAM Role created for Hello World function"
     Value: !GetAtt HelloWorldFunctionRole.Arn
+  GetPlantsForUserIdApi:
+    Description: "API Gateway endpoint URL for Prod stage for Hello World function"
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/GetPlantsForUserId/"
+  GetPlantsForUserIdFunction:
+    Description: "GetPlantsForUserId ARN"
+    Value: !GetAtt GetPlantsForUserIdFunction.Arn
+  GetPlantsForUserIdFunctionIamRole:
+    Description: "Implicit IAM Role created for GetPlantsForUserId function"
+    Value: !GetAtt GetPlantsForUserIdFunctionRole.Arn
