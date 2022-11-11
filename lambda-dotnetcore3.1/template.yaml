@@ -51,6 +51,10 @@ Resources:
           Properties:
             Path: /GetPlantsForUserId
             Method: get
+            RequestParameters: 
+              - method.request.querystring.userid:
+                  Required: true
+                  Caching: false
 
 Outputs:
   # ServerlessRestApi is an implicit API created out of Events key under Serverless::Function
