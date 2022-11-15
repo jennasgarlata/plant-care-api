@@ -1,7 +1,7 @@
 using MySql.Data;
 using MySql.Data.MySqlClient;
 
-namespace AddUserPlant {
+namespace GetAllPlantTypes {
 public class DbConnection
     {
         private DbConnection()

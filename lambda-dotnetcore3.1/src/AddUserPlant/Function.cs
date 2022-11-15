@@ -3,7 +3,6 @@ using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
 using MySql.Data.MySqlClient;
-
 using Amazon.Lambda.APIGatewayEvents;
 using Amazon.Lambda.Core;
 
