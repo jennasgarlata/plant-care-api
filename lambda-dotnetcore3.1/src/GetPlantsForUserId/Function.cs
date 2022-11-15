@@ -56,7 +56,7 @@ namespace GetPlantsForUserId
             dbCon.Server = "plant-care-app-db.ckxkonakdsgz.us-east-1.rds.amazonaws.com";
             dbCon.DatabaseName = "plant_care_app";
             dbCon.UserName = "admin";
-            dbCon.Password = "ADD ME";
+            dbCon.Password = "";
             dbCon.Port = "3306";
 
             if (dbCon.IsConnect())
@@ -98,46 +98,6 @@ namespace GetPlantsForUserId
                 }
                 dbCon.Close();
             }
-
-            // // body.Add(new Dictionary<string, string>{
-            // //     {"user-plant-id", "23"},
-            // //     {"plant-name", "Michael"},
-            // //     {"plant-location", "Kitchen"},
-            // //     {"window-facing", "NE"},
-            // //     {"last-watered", "10-15-2022"},
-            // //     {"generic-name", "Venus Fly Trap"},
-            // //     {"scientific-name", "trapus venus"},
-            // //     {"sun", "indirect"},
-            // //     {"soil", "acidic"},
-            // //     {"type", "tropical"},
-            // //     {"water", "moist"}
-            // // });
-            // // body.Add(new Dictionary<string, string>{
-            // //     {"user-plant-id", "24"},
-            // //     {"plant-name", "Buddy"},
-            // //     {"plant-location", "Kitchen"},
-            // //     {"window-facing", "E"},
-            // //     {"last-watered", "10-15-2022"},
-            // //     {"generic-name", "Christmas Tree"},
-            // //     {"scientific-name", "arbus christmas"},
-            // //     {"sun", "direct"},
-            // //     {"soil", "none"},
-            // //     {"type", "festive"},
-            // //     {"water", "light misting"}
-            // // });
-            // // body.Add(new Dictionary<string, string>{
-            // //     {"user-plant-id", "25"},
-            // //     {"plant-name", "Liesl"},
-            // //     {"plant-location", "Office"},
-            // //     {"window-facing", "S"},
-            // //     {"last-watered", "10-15-2022"},
-            // //     {"generic-name", "Edelweiss"},
-            // //     {"scientific-name", "soundus musicus"},
-            // //     {"sun", "direct"},
-            // //     {"soil", "basic"},
-            // //     {"type", "alpine"},
-            // //     {"water", "dry top"}
-            // // });
 
             return new APIGatewayProxyResponse
             {
