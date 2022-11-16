@@ -74,6 +74,28 @@ Resources:
               - method.request.querystring.lastWatered:
                   Required: false
                   Caching: false
+  DeleteUserPlantFunction:
+    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Properties:
+      CodeUri: ./src/DeleteUserPlant/
+      Handler: DeleteUserPlant::DeleteUserPlant.Function::FunctionHandler
+      Runtime: dotnetcore3.1
+      Architectures:
+        - x86_64
+      MemorySize: 256
+      Environment: # More info about Env Vars: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#environment-object
+        Variables:
+          PARAM1: VALUE
+      Events:
+        DeleteUserPlant:
+          Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
+          Properties:
+            Path: /DeleteUserPlant
+            Method: get
+            RequestParameters: 
+              - method.request.querystring.userPlantId:
+                  Required: true
+                  Caching: false
   GetAllPlantTypesFunction:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
     Properties:
@@ -125,3 +147,12 @@ Outputs:
   GetAllPlantTypesFunctionIamRole:
     Description: "Implicit IAM Role created for GetAllPlantTypes function"
     Value: !GetAtt GetAllPlantTypesFunctionRole.Arn  
+  DeleteUserPlantApi:
+    Description: "API Gateway endpoint URL for Prod stage for DeleteUserPlant function"
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/DeleteUserPlant/"
+  DeleteUserPlantFunction:
+    Description: "DeleteUserPlant ARN"
+    Value: !GetAtt DeleteUserPlantFunction.Arn
+  DeleteUserPlantFunctionIamRole:
+    Description: "Implicit IAM Role created for DeleteUserPlant function"
+    Value: !GetAtt DeleteUserPlantFunctionRole.Arn  
