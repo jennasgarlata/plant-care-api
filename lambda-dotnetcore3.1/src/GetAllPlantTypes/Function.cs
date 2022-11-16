@@ -39,23 +39,26 @@ namespace GetAllPlantTypes
             dbCon.UserName = "admin";
             dbCon.Password = "";
             dbCon.Port = "3306";
-
-            if (dbCon.IsConnect())
-            {
-                string query = "USE plant_care_app;" +
-                    "SELECT plant_data_id, generic_name, scientific_name FROM tbl_plant_data;";
-                var cmd = new MySqlCommand(query, dbCon.Connection);
-                var reader = cmd.ExecuteReader();
-                while (reader.Read())
+            try {
+                if (dbCon.IsConnect())
                 {
-                    var row = new Dictionary<string, string>();
-                    row.Add("plant-data-id", reader.GetInt32("plant_data_id").ToString());
-                    row.Add("generic-name", GetSafeDbString("generic_name", reader));
-                    row.Add("scientific-name", GetSafeDbString("scientific_name", reader));
-                    body.Add(row);
+                    string query = "USE plant_care_app;" +
+                        "SELECT plant_data_id, generic_name, scientific_name FROM tbl_plant_data;";
+                    var cmd = new MySqlCommand(query, dbCon.Connection);
+                    var reader = cmd.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        var row = new Dictionary<string, string>();
+                        row.Add("plant-data-id", reader.GetInt32("plant_data_id").ToString());
+                        row.Add("generic-name", GetSafeDbString("generic_name", reader));
+                        row.Add("scientific-name", GetSafeDbString("scientific_name", reader));
+                        body.Add(row);
+                    }
                 }
+            } finally {
                 dbCon.Close();
             }
+            
 
             return new APIGatewayProxyResponse
             {

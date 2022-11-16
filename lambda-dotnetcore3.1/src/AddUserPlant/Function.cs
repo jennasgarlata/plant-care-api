@@ -43,22 +43,25 @@ namespace AddUserPlant
                 dbCon.UserName = "admin";
                 dbCon.Password = "";
                 dbCon.Port = "3306";
-
-                if (dbCon.IsConnect())
-                {
-                    string query = "INSERT INTO plant_care_app.tbl_user_plant " + 
-                    "(user_id, plant_data_id, plant_name, plant_location, window_facing, last_watered) " +
-                    "VALUES (@user_id, @plant_data_id, @plant_name, @plant_location, @window_facing, @last_watered)";
-                    var cmd = new MySqlCommand(query, dbCon.Connection);
-                    
-                    cmd.Parameters.AddWithValue("@user_id", userid);
-                    cmd.Parameters.AddWithValue("@plant_data_id", plantDataId);
-                    cmd.Parameters.AddWithValue("@plant_name", plantName);
-                    cmd.Parameters.AddWithValue("@plant_location", plantLocation);
-                    cmd.Parameters.AddWithValue("@window_facing", windowFacing);
-                    cmd.Parameters.AddWithValue("@last_watered", lastWatered);
-                    cmd.Prepare();
-                    var reader = cmd.ExecuteNonQuery();
+                try {
+                    if (dbCon.IsConnect()) 
+                    {
+                        string query = "INSERT INTO plant_care_app.tbl_user_plant " + 
+                        "(user_id, plant_data_id, plant_name, plant_location, window_facing, last_watered) " +
+                        "VALUES (@user_id, @plant_data_id, @plant_name, @plant_location, @window_facing, @last_watered)";
+                        var cmd = new MySqlCommand(query, dbCon.Connection);
+                        
+                        cmd.Parameters.AddWithValue("@user_id", userid);
+                        cmd.Parameters.AddWithValue("@plant_data_id", plantDataId);
+                        cmd.Parameters.AddWithValue("@plant_name", plantName);
+                        cmd.Parameters.AddWithValue("@plant_location", plantLocation);
+                        cmd.Parameters.AddWithValue("@window_facing", windowFacing);
+                        cmd.Parameters.AddWithValue("@last_watered", lastWatered);
+                        cmd.Prepare();
+                        var reader = cmd.ExecuteNonQuery();
+                        
+                    }
+                } finally {
                     dbCon.Close();
                 }
 
