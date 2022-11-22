@@ -9,7 +9,7 @@ using Amazon.Lambda.Core;
 // Assembly attribute to enable the Lambda function's JSON input to be converted into a .NET class.
 [assembly: LambdaSerializer(typeof(Amazon.Lambda.Serialization.SystemTextJson.DefaultLambdaJsonSerializer))]
 
-namespace AddUserPlant
+namespace CreateUser
 {
     public class Function
     {
@@ -30,11 +30,10 @@ namespace AddUserPlant
         {
             try {
                 var location = await GetCallingIP();
-                var userid = ExtractQueryParam(apigProxyEvent, "userid", true);
-                var plantDataId = ExtractQueryParam(apigProxyEvent, "plantDataId", true);
-                var plantName = ExtractQueryParam(apigProxyEvent, "plantName", true);
-                var plantLocation = ExtractQueryParam(apigProxyEvent, "plantLocation", true);
-                var windowFacing = ExtractQueryParam(apigProxyEvent, "windowFacing", false);
+                var userName = ExtractQueryParam(apigProxyEvent, "userName", true);
+                var name = ExtractQueryParam(apigProxyEvent, "name", true);
+                var password = ExtractQueryParam(apigProxyEvent, "password", true);
+                var locationParam = ExtractQueryParam(apigProxyEvent, "location", true);
 
                 var dbCon = DbConnection.Instance();
                 dbCon.Server = "plant-care-app-db.ckxkonakdsgz.us-east-1.rds.amazonaws.com";
@@ -42,19 +41,19 @@ namespace AddUserPlant
                 dbCon.UserName = "admin";
                 dbCon.Password = "";
                 dbCon.Port = "3306";
+                var userid = -1;
                 try {
                     if (dbCon.IsConnect()) 
                     {
-                        string query = "INSERT INTO plant_care_app.tbl_user_plant " + 
-                        "(user_id, plant_data_id, plant_name, plant_location, window_facing) " +
-                        "VALUES (@user_id, @plant_data_id, @plant_name, @plant_location, @window_facing)";
+                        string query = "INSERT INTO plant_care_app.tbl_user " + 
+                        "(user_name, name, password, location) " +
+                        "VALUES (@user_name, @name, @password, @location);";
                         var cmd = new MySqlCommand(query, dbCon.Connection);
                         
-                        cmd.Parameters.AddWithValue("@user_id", userid);
-                        cmd.Parameters.AddWithValue("@plant_data_id", plantDataId);
-                        cmd.Parameters.AddWithValue("@plant_name", plantName);
-                        cmd.Parameters.AddWithValue("@plant_location", plantLocation);
-                        cmd.Parameters.AddWithValue("@window_facing", windowFacing);
+                        cmd.Parameters.AddWithValue("@user_name", userName);
+                        cmd.Parameters.AddWithValue("@name", name);
+                        cmd.Parameters.AddWithValue("@password", password);
+                        cmd.Parameters.AddWithValue("@location", locationParam);
                         cmd.Prepare();
                         var reader = cmd.ExecuteNonQuery();
                         
@@ -65,7 +64,7 @@ namespace AddUserPlant
 
                 return new APIGatewayProxyResponse
                 {
-                    Body = JsonSerializer.Serialize("UserPlant successfully added."),
+                    Body = JsonSerializer.Serialize("User successfully added with user_id: " + userid),
                     StatusCode = 200,
                     Headers = new Dictionary<string, string> { 
                         { "Content-Type", "application/json" },
