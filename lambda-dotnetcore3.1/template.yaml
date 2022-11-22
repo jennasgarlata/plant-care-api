@@ -15,11 +15,11 @@ Globals:
       AllowCredentials: "'*'"
 
 Resources:
-  HelloWorldFunction:
+  GetPlantLocationsForUserIdFunction:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
     Properties:
-      CodeUri: ./src/HelloWorld/
-      Handler: HelloWorld::HelloWorld.Function::FunctionHandler
+      CodeUri: ./src/GetPlantLocationsForUserId/
+      Handler: GetPlantLocationsForUserId::GetPlantLocationsForUserId.Function::FunctionHandler
       Runtime: dotnetcore3.1
       Architectures:
         - x86_64
@@ -28,11 +28,15 @@ Resources:
         Variables:
           PARAM1: VALUE
       Events:
-        HelloWorld:
+        GetPlantLocationsForUserId:
           Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
           Properties:
-            Path: /hello
+            Path: /GetPlantLocationsForUserId
             Method: get
+            RequestParameters: 
+              - method.request.querystring.userid:
+                  Required: true
+                  Caching: false
   GetPlantsForUserIdFunction:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
     Properties:
@@ -51,22 +55,147 @@ Resources:
           Properties:
             Path: /GetPlantsForUserId
             Method: get
+            RequestParameters: 
+              - method.request.querystring.userid:
+                  Required: true
+                  Caching: false
+  AddUserPlantFunction:
+    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Properties:
+      CodeUri: ./src/AddUserPlant/
+      Handler: AddUserPlant::AddUserPlant.Function::FunctionHandler
+      Runtime: dotnetcore3.1
+      Architectures:
+        - x86_64
+      MemorySize: 256
+      Environment: # More info about Env Vars: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#environment-object
+        Variables:
+          PARAM1: VALUE
+      Events:
+        AddUserPlant:
+          Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
+          Properties:
+            Path: /AddUserPlant
+            Method: get
+            RequestParameters: 
+              - method.request.querystring.userid:
+                  Required: true
+                  Caching: false
+              - method.request.querystring.plantDataId:
+                  Required: true
+                  Caching: false
+              - method.request.querystring.plantName:
+                  Required: true
+                  Caching: false
+              - method.request.querystring.plantLocation:
+                  Required: true
+                  Caching: false
+              - method.request.querystring.windowLocation:
+                  Required: false
+                  Caching: false
+              - method.request.querystring.lastWatered:
+                  Required: false
+                  Caching: false
+  CreateUserFunction:
+    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Properties:
+      CodeUri: ./src/CreateUser/
+      Handler: CreateUser::CreateUser.Function::FunctionHandler
+      Runtime: dotnetcore3.1
+      Architectures:
+        - x86_64
+      MemorySize: 256
+      Environment: # More info about Env Vars: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#environment-object
+        Variables:
+          PARAM1: VALUE
+      Events:
+        CreateUser:
+          Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
+          Properties:
+            Path: /CreateUser
+            Method: get
+            RequestParameters: 
+              - method.request.querystring.userName:
+                  Required: true
+                  Caching: false
+              - method.request.querystring.password:
+                  Required: true
+                  Caching: false
+              - method.request.querystring.name:
+                  Required: true
+                  Caching: false
+              - method.request.querystring.location:
+                  Required: true
+                  Caching: false
+  WaterUserPlantFunction:
+    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Properties:
+      CodeUri: ./src/WaterUserPlant/
+      Handler: WaterUserPlant::WaterUserPlant.Function::FunctionHandler
+      Runtime: dotnetcore3.1
+      Architectures:
+        - x86_64
+      MemorySize: 256
+      Environment: # More info about Env Vars: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#environment-object
+        Variables:
+          PARAM1: VALUE
+      Events:
+        WaterUserPlant:
+          Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
+          Properties:
+            Path: /WaterUserPlant
+            Method: get
+            RequestParameters: 
+              - method.request.querystring.userPlantId:
+                  Required: true
+                  Caching: false
+  DeleteUserPlantFunction:
+    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Properties:
+      CodeUri: ./src/DeleteUserPlant/
+      Handler: DeleteUserPlant::DeleteUserPlant.Function::FunctionHandler
+      Runtime: dotnetcore3.1
+      Architectures:
+        - x86_64
+      MemorySize: 256
+      Environment: # More info about Env Vars: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#environment-object
+        Variables:
+          PARAM1: VALUE
+      Events:
+        DeleteUserPlant:
+          Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
+          Properties:
+            Path: /DeleteUserPlant
+            Method: get
+            RequestParameters: 
+              - method.request.querystring.userPlantId:
+                  Required: true
+                  Caching: false
+  GetAllPlantTypesFunction:
+    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Properties:
+      CodeUri: ./src/GetAllPlantTypes/
+      Handler: GetAllPlantTypes::GetAllPlantTypes.Function::FunctionHandler
+      Runtime: dotnetcore3.1
+      Architectures:
+        - x86_64
+      MemorySize: 256
+      Environment: # More info about Env Vars: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#environment-object
+        Variables:
+          PARAM1: VALUE
+      Events:
+        GetAllPlantTypes:
+          Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
+          Properties:
+            Path: /GetAllPlantTypes
+            Method: get
 
 Outputs:
   # ServerlessRestApi is an implicit API created out of Events key under Serverless::Function
   # Find out more about other implicit resources you can reference within SAM
   # https://github.com/awslabs/serverless-application-model/blob/master/docs/internals/generated_resources.rst#api
-  HelloWorldApi:
-    Description: "API Gateway endpoint URL for Prod stage for Hello World function"
-    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/hello/"
-  HelloWorldFunction:
-    Description: "Hello World Lambda Function ARN"
-    Value: !GetAtt HelloWorldFunction.Arn
-  HelloWorldFunctionIamRole:
-    Description: "Implicit IAM Role created for Hello World function"
-    Value: !GetAtt HelloWorldFunctionRole.Arn
   GetPlantsForUserIdApi:
-    Description: "API Gateway endpoint URL for Prod stage for Hello World function"
+    Description: "API Gateway endpoint URL for Prod stage for GetPlantsForUserId function"
     Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/GetPlantsForUserId/"
   GetPlantsForUserIdFunction:
     Description: "GetPlantsForUserId ARN"
@@ -74,3 +203,57 @@ Outputs:
   GetPlantsForUserIdFunctionIamRole:
     Description: "Implicit IAM Role created for GetPlantsForUserId function"
     Value: !GetAtt GetPlantsForUserIdFunctionRole.Arn
+  GetPlantLocationsForUserIdApi:
+    Description: "API Gateway endpoint URL for Prod stage for GetPlantLocationsForUserId function"
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/GetPlantLocationsForUserId/"
+  GetPlantLocationsForUserIdFunction:
+    Description: "GetPlantLocationsForUserId ARN"
+    Value: !GetAtt GetPlantLocationsForUserIdFunction.Arn
+  GetPlantLocationsForUserIdFunctionIamRole:
+    Description: "Implicit IAM Role created for GetPlantLocationsForUserId function"
+    Value: !GetAtt GetPlantLocationsForUserIdFunctionRole.Arn
+  AddUserPlantApi:
+    Description: "API Gateway endpoint URL for Prod stage for AddUserPlant function"
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/AddUserPlant/"
+  AddUserPlantFunction:
+    Description: "AddUserPlant ARN"
+    Value: !GetAtt AddUserPlantFunction.Arn
+  AddUserPlantFunctionIamRole:
+    Description: "Implicit IAM Role created for AddUserPlant function"
+    Value: !GetAtt AddUserPlantFunctionRole.Arn
+  CreateUserApi:
+    Description: "API Gateway endpoint URL for Prod stage for CreateUser function"
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/CreateUser/"
+  CreateUserFunction:
+    Description: "CreateUser ARN"
+    Value: !GetAtt CreateUserFunction.Arn
+  CreateUserFunctionIamRole:
+    Description: "Implicit IAM Role created for CreateUser function"
+    Value: !GetAtt CreateUserFunctionRole.Arn
+  GetAllPlantTypesApi:
+    Description: "API Gateway endpoint URL for Prod stage for GetAllPlantTypes function"
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/GetAllPlantTypes/"
+  GetAllPlantTypesFunction:
+    Description: "GetAllPlantTypes ARN"
+    Value: !GetAtt GetAllPlantTypesFunction.Arn
+  GetAllPlantTypesFunctionIamRole:
+    Description: "Implicit IAM Role created for GetAllPlantTypes function"
+    Value: !GetAtt GetAllPlantTypesFunctionRole.Arn  
+  DeleteUserPlantApi:
+    Description: "API Gateway endpoint URL for Prod stage for DeleteUserPlant function"
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/DeleteUserPlant/"
+  DeleteUserPlantFunction:
+    Description: "DeleteUserPlant ARN"
+    Value: !GetAtt DeleteUserPlantFunction.Arn
+  DeleteUserPlantFunctionIamRole:
+    Description: "Implicit IAM Role created for DeleteUserPlant function"
+    Value: !GetAtt DeleteUserPlantFunctionRole.Arn  
+  WaterUserPlantApi:
+    Description: "API Gateway endpoint URL for Prod stage for WaterUserPlant function"
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/WaterUserPlant/"
+  WaterUserPlantFunction:
+    Description: "WaterUserPlant ARN"
+    Value: !GetAtt WaterUserPlantFunction.Arn
+  WaterUserPlantFunctionIamRole:
+    Description: "Implicit IAM Role created for WaterUserPlant function"
+    Value: !GetAtt WaterUserPlantFunctionRole.Arn  
