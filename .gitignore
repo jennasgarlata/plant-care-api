@@ -11,6 +11,9 @@ autom4te.cache/
 tarballs/
 test-results/
 
+# AWS SAM clutter
+.aws-sam/
+
 # Mac bundle stuff
 *.dmg
 *.app

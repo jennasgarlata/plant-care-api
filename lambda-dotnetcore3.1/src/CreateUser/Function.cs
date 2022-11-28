@@ -39,7 +39,7 @@ namespace CreateUser
                 dbCon.Server = "plant-care-app-db.ckxkonakdsgz.us-east-1.rds.amazonaws.com";
                 dbCon.DatabaseName = "plant_care_app";
                 dbCon.UserName = "admin";
-                dbCon.Password = "";
+                dbCon.Password = "AZOIdQaqpRhc4gIJNGML";
                 dbCon.Port = "3306";
                 var userid = -1;
                 try {

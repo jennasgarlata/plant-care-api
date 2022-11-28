@@ -189,6 +189,31 @@ Resources:
           Properties:
             Path: /GetAllPlantTypes
             Method: get
+  LoginFunction:
+    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Properties:
+      CodeUri: ./src/Login/
+      Handler: Login::Login.Function::FunctionHandler
+      Runtime: dotnetcore3.1
+      Architectures:
+        - x86_64
+      MemorySize: 256
+      Environment: # More info about Env Vars: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#environment-object
+        Variables:
+          PARAM1: VALUE
+      Events:
+        Login:
+          Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
+          Properties:
+            Path: /Login
+            Method: get
+            RequestParameters: 
+              - method.request.querystring.userName:
+                  Required: true
+                  Caching: false
+              - method.request.querystring.password:
+                  Required: true
+                  Caching: false
 
 Outputs:
   # ServerlessRestApi is an implicit API created out of Events key under Serverless::Function
@@ -257,3 +282,12 @@ Outputs:
   WaterUserPlantFunctionIamRole:
     Description: "Implicit IAM Role created for WaterUserPlant function"
     Value: !GetAtt WaterUserPlantFunctionRole.Arn  
+  LoginApi:
+    Description: "API Gateway endpoint URL for Prod stage for Login function"
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/Login/"
+  LoginFunction:
+    Description: "Login ARN"
+    Value: !GetAtt LoginFunction.Arn
+  LoginFunctionIamRole:
+    Description: "Implicit IAM Role created for Login function"
+    Value: !GetAtt LoginFunctionRole.Arn  
