@@ -43,7 +43,10 @@ namespace GetAllPlantTypes
                 if (dbCon.IsConnect())
                 {
                     string query = "USE plant_care_app;" +
-                        "SELECT plant_data_id, generic_name, scientific_name FROM tbl_plant_data;";
+                        "SELECT pd.plant_data_id, pd.generic_name, pd.scientific_name, c1.text as sun, c2.text as soil, c3.text as type_c, c4.text as water " + 
+                        "FROM tbl_plant_data pd " +
+                        "LEFT JOIN tbl_code c1 ON pd.sun_code = c1.code_id LEFT JOIN tbl_code c2 ON pd.soil_code = c2.code_id " +
+                        "LEFT JOIN tbl_code c3 ON pd.type_code = c3.code_id LEFT JOIN tbl_code c4 ON pd.water_code = c4.code_id ";
                     var cmd = new MySqlCommand(query, dbCon.Connection);
                     var reader = cmd.ExecuteReader();
                     while (reader.Read())
@@ -52,6 +55,10 @@ namespace GetAllPlantTypes
                         row.Add("plant-data-id", reader.GetInt32("plant_data_id").ToString());
                         row.Add("generic-name", GetSafeDbString("generic_name", reader));
                         row.Add("scientific-name", GetSafeDbString("scientific_name", reader));
+                        row.Add("sun", GetSafeDbString("sun", reader));
+                        row.Add("soil", GetSafeDbString("soil", reader));
+                        row.Add("type", GetSafeDbString("type_c", reader));
+                        row.Add("water", GetSafeDbString("water", reader));
                         body.Add(row);
                     }
                 }

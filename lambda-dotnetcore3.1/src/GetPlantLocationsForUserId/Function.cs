@@ -90,25 +90,5 @@ namespace GetPlantLocationsForUserId
                 }
             };
         }
-
-        private string GetSafeDbString(string field, MySqlDataReader reader)
-        {
-            int ordinal = reader.GetOrdinal(field);
-    
-            if (reader.IsDBNull(ordinal))
-            {
-                return "";
-            } else
-            {
-                if (reader.GetDataTypeName(ordinal).Equals(MySqlDbType.DateTime))
-                {
-                    return reader.GetDateTime(ordinal).ToLongDateString();
-                } else
-                {
-                    return reader.GetString(ordinal);
-                }
-                
-            }
-        }
     }
 }

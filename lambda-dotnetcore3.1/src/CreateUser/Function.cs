@@ -41,7 +41,7 @@ namespace CreateUser
                 dbCon.UserName = "admin";
                 dbCon.Password = "AZOIdQaqpRhc4gIJNGML";
                 dbCon.Port = "3306";
-                var userid = -1;
+                var body = new Dictionary<string, string>();
                 try {
                     if (dbCon.IsConnect()) 
                     {
@@ -56,15 +56,31 @@ namespace CreateUser
                         cmd.Parameters.AddWithValue("@location", locationParam);
                         cmd.Prepare();
                         var reader = cmd.ExecuteNonQuery();
-                        
                     }
+
+                    if (dbCon.IsConnect())
+                    {
+                        string query = "SELECT user_id FROM plant_care_app.tbl_user WHERE user_name ='" + userName + "';";
+                        var cmd = new MySqlCommand(query, dbCon.Connection);
+                        var reader = cmd.ExecuteReader();
+                        if (reader.Read())
+                        {
+                            body.Add("userid", GetSafeDbString("user_id", reader));
+                            body.Add("userName", userName);
+                            body.Add("name", name);
+                            body.Add("password", password);
+                            body.Add("location", locationParam);
+                        }
+                    }
+
+                    
                 } finally {
                     dbCon.Close();
                 }
 
                 return new APIGatewayProxyResponse
                 {
-                    Body = JsonSerializer.Serialize("User successfully added with user_id: " + userid),
+                    Body = JsonSerializer.Serialize(body),
                     StatusCode = 200,
                     Headers = new Dictionary<string, string> { 
                         { "Content-Type", "application/json" },
@@ -90,6 +106,26 @@ namespace CreateUser
                         { "X-Requested-With", "*" }
                     }
             };
+            }
+        }
+
+        private string GetSafeDbString(string field, MySqlDataReader reader)
+        {
+            int ordinal = reader.GetOrdinal(field);
+    
+            if (reader.IsDBNull(ordinal))
+            {
+                return "";
+            } else
+            {
+                if (reader.GetDataTypeName(ordinal).Equals(MySqlDbType.DateTime))
+                {
+                    return reader.GetDateTime(ordinal).ToString();
+                } else
+                {
+                    return reader.GetString(ordinal);
+                }
+                
             }
         }
 
