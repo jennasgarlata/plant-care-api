@@ -36,7 +36,7 @@ Resources:
             RequestParameters: 
               - method.request.querystring.userid:
                   Required: true
-                  Caching: false
+                  Caching: true
   GetPlantsForUserIdFunction:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
     Properties:
@@ -58,7 +58,7 @@ Resources:
             RequestParameters: 
               - method.request.querystring.userid:
                   Required: true
-                  Caching: false
+                  Caching: true
   AddUserPlantFunction:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
     Properties:
@@ -80,22 +80,22 @@ Resources:
             RequestParameters: 
               - method.request.querystring.userid:
                   Required: true
-                  Caching: false
+                  Caching: true
               - method.request.querystring.plantDataId:
                   Required: true
-                  Caching: false
+                  Caching: true
               - method.request.querystring.plantName:
                   Required: true
-                  Caching: false
+                  Caching: true
               - method.request.querystring.plantLocation:
                   Required: true
-                  Caching: false
+                  Caching: true
               - method.request.querystring.windowLocation:
                   Required: false
-                  Caching: false
+                  Caching: true
               - method.request.querystring.lastWatered:
                   Required: false
-                  Caching: false
+                  Caching: true
   CreateUserFunction:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
     Properties:
@@ -117,16 +117,16 @@ Resources:
             RequestParameters: 
               - method.request.querystring.userName:
                   Required: true
-                  Caching: false
+                  Caching: true
               - method.request.querystring.password:
                   Required: true
-                  Caching: false
+                  Caching: true
               - method.request.querystring.name:
                   Required: true
-                  Caching: false
+                  Caching: true
               - method.request.querystring.location:
                   Required: true
-                  Caching: false
+                  Caching: true
   WaterUserPlantFunction:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
     Properties:
@@ -148,7 +148,7 @@ Resources:
             RequestParameters: 
               - method.request.querystring.userPlantId:
                   Required: true
-                  Caching: false
+                  Caching: true
   DeleteUserPlantFunction:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
     Properties:
@@ -170,7 +170,7 @@ Resources:
             RequestParameters: 
               - method.request.querystring.userPlantId:
                   Required: true
-                  Caching: false
+                  Caching: true
   GetAllPlantTypesFunction:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
     Properties:
@@ -210,10 +210,10 @@ Resources:
             RequestParameters: 
               - method.request.querystring.userName:
                   Required: true
-                  Caching: false
+                  Caching: true
               - method.request.querystring.password:
                   Required: true
-                  Caching: false
+                  Caching: true
 
 Outputs:
   # ServerlessRestApi is an implicit API created out of Events key under Serverless::Function
